@@ -12,6 +12,7 @@ async function sendEmail(emailParams) {
     "smtp-host": smtpHost,
     "smtp-user": smtpUser,
     "smtp-pass": smtpPass,
+    "smtp-port": smtpPort,
   } = emailParams;
 
   if (!smtpHost || !smtpUser || !smtpPass) {
@@ -20,7 +21,7 @@ async function sendEmail(emailParams) {
 
   const transporter = nodemailer.createTransport({
     host: smtpHost,
-    port: 465, // You could also allow overriding this via params
+    port: smtpPort,
     secure: true,
     auth: {
       user: smtpUser,

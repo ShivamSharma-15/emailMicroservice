@@ -34,6 +34,7 @@ async function emailController(req, res) {
     "smtp-host",
     "smtp-user",
     "smtp-pass",
+    "smtp-port",
   ];
   const missing = requiredFields.filter((f) => !emailPayload[f]);
   if (missing.length > 0) {

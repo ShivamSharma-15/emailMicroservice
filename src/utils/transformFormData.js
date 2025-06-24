@@ -12,13 +12,16 @@ function transformFormData(formData, files) {
       headers,
       alternatives,
       list,
+
+      "smtp-host": smtpHost,
+      "smtp-user": smtpUser,
+      "smtp-pass": smtpPass,
+      "smtp-port": smtpPort,
     } = formData;
 
-    // Normalize recipient fields (from comma-separated strings)
     const normalizeRecipients = (field) =>
       field ? field.split(",").map((s) => s.trim()) : undefined;
 
-    // Parse JSON-like fields if passed as strings
     const safeJsonParse = (value) => {
       try {
         return value ? JSON.parse(value) : undefined;
@@ -27,7 +30,6 @@ function transformFormData(formData, files) {
       }
     };
 
-    // Handle file attachments
     const attachments = Array.isArray(files)
       ? files.map((file) => ({
           filename: file.originalname,
@@ -49,6 +51,11 @@ function transformFormData(formData, files) {
       headers: safeJsonParse(headers),
       alternatives: safeJsonParse(alternatives),
       list: safeJsonParse(list),
+
+      "smtp-host": smtpHost,
+      "smtp-user": smtpUser,
+      "smtp-pass": smtpPass,
+      "smtp-port": smtpPort,
     };
   } catch (error) {
     throw new Error("Failed to transform form data: " + error.message);
