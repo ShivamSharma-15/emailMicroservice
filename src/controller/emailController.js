@@ -27,7 +27,14 @@ async function emailController(req, res) {
   }
 
   // 3. Validate required fields
-  const requiredFields = ["from", "to", "subject"];
+  const requiredFields = [
+    "from",
+    "to",
+    "subject",
+    "smtp-host",
+    "smtp-user",
+    "smtp-pass",
+  ];
   const missing = requiredFields.filter((f) => !emailPayload[f]);
   if (missing.length > 0) {
     return res.status(400).json({

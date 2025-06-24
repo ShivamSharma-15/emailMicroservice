@@ -1,24 +1,33 @@
 const nodemailer = require("nodemailer");
-require("dotenv").config();
 const { buildEmailOptions } = require("../utils/buildEmailOptions");
 const handleError = require("../utils/errorHandler");
 const { heal } = require("../utils/heal");
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT, 10),
-  secure: true,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function sendEmail(emailParams) {
+  const {
+    "smtp-host": smtpHost,
+    "smtp-user": smtpUser,
+    "smtp-pass": smtpPass,
+  } = emailParams;
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    throw new Error("Missing SMTP credentials (host, user, pass)");
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: 465, // You could also allow overriding this via params
+    secure: true,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+  });
+
   const mailOptions = buildEmailOptions(emailParams);
   const MAX_RETRIES = 5;
   const RETRY_DELAY = 5000;
